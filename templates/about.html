@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}How it works — Misinformation Shield{% endblock %}
+{% block content %}
+<div class="wrap about-shell">
+  <div class="eyebrow">How it works</div>
+  <h1 style="font-size:36px;">Nine agents, one traceable verdict.</h1>
+  <p class="lede">Misinformation Shield doesn't ask a language model "is this true?" and print whatever it says. Every investigation runs through nine independent, single-purpose agents — each one persists its own status and output, so the whole process is auditable after the fact.</p>
+
+  <div class="chain" style="margin-top:40px;">
+    <div class="chain-step"><span class="idx">01</span><h4>Claim extraction</h4><p>Pulls the specific, checkable factual claim out of free text, a headline, or a link — filtering out opinion and filler.</p></div>
+    <div class="chain-step"><span class="idx">02</span><h4>Claim analysis</h4><p>Normalizes and classifies the claim so the right research strategy gets used.</p></div>
+    <div class="chain-step"><span class="idx">03</span><h4>Web research</h4><p>Searches live sources for evidence — supporting, contradicting, or neutral.</p></div>
+    <div class="chain-step"><span class="idx">04</span><h4>Knowledge base (RAG)</h4><p>Searches a private, curated knowledge base in parallel with the web research.</p></div>
+    <div class="chain-step"><span class="idx">05</span><h4>Evidence classification</h4><p>Sorts every piece of evidence found into supporting, contradicting, neutral, or contextual.</p></div>
+    <div class="chain-step"><span class="idx">06</span><h4>Source credibility</h4><p>Scores each source's track record. This is a weight on confidence, never a verdict override.</p></div>
+    <div class="chain-step"><span class="idx">07</span><h4>Contradiction check</h4><p>Deliberately searches for evidence the claim is <em>false</em> — "&lt;claim&gt; debunked", "&lt;claim&gt; fact check" — so confirmation bias can't under-surface disconfirming evidence.</p></div>
+    <div class="chain-step"><span class="idx">08</span><h4>Verification</h4><p>Computes the final verdict and confidence score. No evidence means <em>unverifiable</em> — never a guess. Thin evidence caps confidence automatically.</p></div>
+    <div class="chain-step"><span class="idx">09</span><h4>Report generation</h4><p>Assembles the citable report you see, with every source attached and exportable as a PDF.</p></div>
+  </div>
+
+  <div class="summary-block" style="margin-top:50px;">
+    <h3>Verdict scale</h3>
+    <p style="margin:0;">Verified · Mostly True · Partially True · Misleading · Mostly False · False · Unverifiable</p>
+  </div>
+
+  <div class="hero-actions" style="margin-top:36px;">
+    <a class="btn btn-accent" href="{{ url_for('verify') }}">Open a case</a>
+  </div>
+</div>
+{% endblock %}

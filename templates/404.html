@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Not found — Misinformation Shield{% endblock %}
+{% block content %}
+<div class="wrap case-shell">
+  <div class="empty-state">
+    <h3>Case not found</h3>
+    <p>That page doesn't exist, or the case has been removed.</p>
+    <a class="btn btn-accent" href="{{ url_for('home') }}">Back to safety</a>
+  </div>
+</div>
+{% endblock %}

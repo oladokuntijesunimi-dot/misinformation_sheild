@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Misinformation Shield — Verify before you believe{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Nine-agent evidence pipeline</div>
+      <h1>Verify before you<br><span class="hl">believe</span> it.</h1>
+      <p class="hero-sub">Drop in a claim, a headline, or a link. Nine independent agents research it against live sources and a knowledge base, weigh the evidence on both sides, and hand you a verdict you can actually trace back to its sources.</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent" href="{{ url_for('verify') }}">Open a new case</a>
+        <a class="btn" href="{{ url_for('about') }}">How the pipeline works</a>
+      </div>
+
+      <form class="hero-quick" data-claim-form>
+        <input type="hidden" name="input_type" value="text">
+        <label for="quick-content">Or paste a claim right here</label>
+        <textarea id="quick-content" name="content" placeholder="e.g. &ldquo;The Central Bank has banned all cash withdrawals above ₦20,000 starting next month.&rdquo;" required></textarea>
+        <div class="hero-quick-row">
+          <select name="category" aria-label="Category">
+            <option value="">Category (optional)</option>
+            <option>Politics</option>
+            <option>Health</option>
+            <option>Finance</option>
+            <option>Economy</option>
+            <option>Education</option>
+            <option>Technology</option>
+          </select>
+          <button class="btn btn-accent" type="submit">Investigate</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="stamp-display">
+      <div class="case-card">
+        <div class="case-label">Case #A17F — West Africa desk</div>
+        <div class="case-claim">&ldquo;A new national digital ID will be required to open any bank account.&rdquo;</div>
+        <span class="stamp">Partially True</span>
+      </div>
+      <div class="stamp-float">9/9 agents reported<br>Confidence: 74%</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Chain of custody</div>
+      <h2>Every verdict is traceable, end to end.</h2>
+      <p>This isn't a claim-in, verdict-out chatbot. Each investigation runs through nine independent agents, and every one of them persists its own status and output.</p>
+    </div>
+    <div class="chain">
+      <div class="chain-step"><span class="idx">01 — 02</span><h4>Extract &amp; analyze</h4><p>Pulls the checkable factual claim out of your input and classifies it.</p></div>
+      <div class="chain-step"><span class="idx">03 — 04</span><h4>Research in parallel</h4><p>Searches the live web and your knowledge base simultaneously for evidence.</p></div>
+      <div class="chain-step"><span class="idx">05 — 06</span><h4>Weigh the evidence</h4><p>Sorts supporting vs. contradicting evidence and scores each source's credibility.</p></div>
+      <div class="chain-step"><span class="idx">07</span><h4>Argue the other side</h4><p>A dedicated adversarial pass searches specifically for evidence the claim is false.</p></div>
+      <div class="chain-step"><span class="idx">08</span><h4>Verify</h4><p>Computes a verdict and confidence score — never a guess when evidence is thin.</p></div>
+      <div class="chain-step"><span class="idx">09</span><h4>Report</h4><p>Assembles a citable, exportable report with every source attached.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Built against hallucination</div>
+      <h2>It would rather say &ldquo;unverifiable&rdquo; than guess.</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="glyph">∅</div>
+        <h4>No evidence, no verdict</h4>
+        <p>If a search returns nothing, the verdict is <em>unverifiable</em> — never a confident-sounding guess.</p>
+      </div>
+      <div class="trust-card">
+        <div class="glyph">↯</div>
+        <h4>Adversarial by design</h4>
+        <p>A dedicated agent runs a second round of searches specifically hunting for evidence that the claim is false.</p>
+      </div>
+      <div class="trust-card">
+        <div class="glyph">⚖</div>
+        <h4>Credibility is a weight, not a veto</h4>
+        <p>A low-credibility source lowers confidence in evidence drawn from it — it never single-handedly flips a verdict.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

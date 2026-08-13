@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Case {{ investigation_id[:8] }} — Misinformation Shield{% endblock %}
+{% block content %}
+<div class="wrap case-shell" id="investigation-shell">
+  <div id="investigation-root" data-investigation-id="{{ investigation_id }}">
+    <div class="progress-header">
+      <p>Loading case…</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Open a case — Misinformation Shield{% endblock %}
+{% block content %}
+<div class="wrap verify-shell">
+  <div class="eyebrow">New case</div>
+  <h1 style="font-size:32px;">What do you want checked?</h1>
+  <p style="margin-bottom:30px;">Paste the text of a claim, a headline, or a link. The pipeline extracts the checkable fact and takes it from there.</p>
+
+  <div class="verify-card">
+    <form data-claim-form>
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-type="text">Text or headline</button>
+        <button type="button" class="tab" data-type="url">Link / URL</button>
+        <button type="button" class="tab" data-type="social_media">Social post</button>
+      </div>
+      <input type="hidden" name="input_type" id="input-type" value="text">
+
+      <div class="field">
+        <label for="content" id="content-label">Claim or headline</label>
+        <textarea id="content" name="content" placeholder="e.g. &ldquo;The Central Bank has banned all cash withdrawals above ₦20,000 starting next month.&rdquo;" required></textarea>
+        <p class="field-hint" id="content-hint">Paste the exact wording where possible — it helps the extraction agent isolate the checkable fact.</p>
+      </div>
+
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="">General</option>
+          <option>Politics</option>
+          <option>Health</option>
+          <option>Finance</option>
+          <option>Economy</option>
+          <option>Education</option>
+          <option>Technology</option>
+          <option>Security</option>
+        </select>
+      </div>
+
+      <button class="btn btn-accent btn-block" type="submit">Start investigation</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const tabs = document.querySelectorAll(".tab");
+  const inputType = document.getElementById("input-type");
+  const contentLabel = document.getElementById("content-label");
+  const content = document.getElementById("content");
+  const hint = document.getElementById("content-hint");
+
+  const copy = {
+    text: ["Claim or headline", "e.g. \u201cThe Central Bank has banned all cash withdrawals above \u20a620,000 starting next month.\u201d", "Paste the exact wording where possible \u2014 it helps the extraction agent isolate the checkable fact."],
+    url: ["Article or post URL", "https://example.com/news/some-claim", "The claim is pulled from the page content at this link."],
+    social_media: ["Social media post text", "Paste the caption or post text here", "Copy the post's text directly \u2014 screenshots aren\u2019t supported yet."],
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      const type = tab.dataset.type;
+      inputType.value = type;
+      const [label, placeholder, hintText] = copy[type];
+      contentLabel.textContent = label;
+      content.placeholder = placeholder;
+      hint.textContent = hintText;
+    });
+  });
+</script>
+{% endblock %}

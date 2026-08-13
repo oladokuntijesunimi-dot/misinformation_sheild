@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Case log — Misinformation Shield{% endblock %}
+{% block content %}
+<div class="wrap log-shell">
+  <div class="log-header">
+    <div>
+      <div class="eyebrow">Case log</div>
+      <h1 style="font-size:30px;">Every claim you've run through the pipeline.</h1>
+    </div>
+    <a class="btn btn-accent" href="{{ url_for('verify') }}">New case</a>
+  </div>
+  <div id="case-log-root">
+    <div class="empty-state"><h3>Loading your cases…</h3></div>
+  </div>
+</div>
+{% endblock %}
