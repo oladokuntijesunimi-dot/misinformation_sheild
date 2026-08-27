@@ -49,7 +49,13 @@ class GroqProvider(LLMProvider):
     def __init__(self, api_key: str, model: str):
         self.api_key = api_key
         self.model = model
-        self.base_url = "https://api.groq.com/openai/v1/chat/completions"
+        # Allow overriding the Groq/OpenAI-compatible base URL via env var
+        # (useful when the provider's route changes or for private endpoints).
+        if getattr(config, "LLM_BASE_URL", ""):
+            # keep any provided base URL but strip trailing slash
+            self.base_url = config.LLM_BASE_URL.rstrip("/")
+        else:
+            self.base_url = "https://api.groq.com/openai/v1/chat/completions"
 
     async def generate(self, prompt: str, system_prompt: Optional[str] = None,
                         json_mode: bool = False, temperature: float = 0.2) -> str:
