@@ -80,10 +80,45 @@ class GroqProvider(LLMProvider):
         }
 
         async with httpx.AsyncClient(timeout=60) as client:
-            resp = await client.post(self.base_url, json=payload, headers=headers)
-            resp.raise_for_status()
-            data = resp.json()
-            return data["choices"][0]["message"]["content"]
+            tried = [self.base_url]
+            try:
+                resp = await client.post(self.base_url, json=payload, headers=headers)
+                resp.raise_for_status()
+                data = resp.json()
+                return data["choices"][0]["message"]["content"]
+            except httpx.HTTPStatusError as exc:
+                status = getattr(exc.response, "status_code", None)
+                logger.warning("LLM request to %s failed with status %s", self.base_url, status)
+                # If we got a 404 from the default Groq host, try a couple of
+                # reasonable alternative endpoints automatically before failing
+                # (helps when provider changed their hostname/path).
+                fallbacks = []
+                if "api.groq.com" in self.base_url:
+                    fallbacks.append(self.base_url.replace("api.groq.com", "api.groq.ai"))
+                if "/openai/v1/" in self.base_url:
+                    fallbacks.append(self.base_url.replace("/openai/v1/", "/v1/"))
+                # Combine both transformations as a last resort
+                if "api.groq.com" in self.base_url and "/openai/v1/" in self.base_url:
+                    candidate = self.base_url.replace("api.groq.com", "api.groq.ai").replace("/openai/v1/", "/v1/")
+                    fallbacks.append(candidate)
+
+                for url in fallbacks:
+                    if url in tried:
+                        continue
+                    tried.append(url)
+                    logger.info("Retrying LLM request with fallback URL: %s", url)
+                    resp = await client.post(url, json=payload, headers=headers)
+                    try:
+                        resp.raise_for_status()
+                        data = resp.json()
+                        # update base_url to the working endpoint for subsequent calls
+                        self.base_url = url
+                        return data["choices"][0]["message"]["content"]
+                    except httpx.HTTPStatusError:
+                        logger.warning("Fallback URL %s also failed (status=%s)", url, resp.status_code)
+                        continue
+                # No fallback succeeded — re-raise the original exception for upstream handling
+                raise
 
 
 class MockLLMProvider(LLMProvider):
