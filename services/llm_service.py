@@ -15,6 +15,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Optional
 
 from config import config
+import socket
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +108,18 @@ class GroqProvider(LLMProvider):
                     if url in tried:
                         continue
                     tried.append(url)
+                    parsed = urlparse(url)
+                    hostname = parsed.hostname
+                    # Skip fallback URLs whose hostnames fail DNS resolution
+                    try:
+                        socket.getaddrinfo(hostname, None)
+                    except socket.gaierror:
+                        logger.warning(
+                            "Skipping fallback URL %s because host %s cannot be resolved",
+                            url,
+                            hostname,
+                        )
+                        continue
                     logger.info("Retrying LLM request with fallback URL: %s", url)
                     resp = await client.post(url, json=payload, headers=headers)
                     try:
