@@ -47,6 +47,7 @@ class Config:
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq")
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "")
     LLM_MODEL: str = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
+    LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "")
 
     # --- Pinecone ------------------------------------------------------------
     PINECONE_API_KEY: str = os.getenv("PINECONE_API_KEY", "")
